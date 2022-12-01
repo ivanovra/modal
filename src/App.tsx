@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./global.css";
+import Modal from "./Modal/Modal";
 
-function App() {
+const App = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
+  const [countOpened, setCountOpened] = useState<number>(0);
+
+  const openModal = (): void => {
+    if (isConfirmed) return alert("Действие выполнено");
+    setShowModal(true);
+    setCountOpened((prev) => prev + 1)
+  };
+
+  const showSuccess = (): void => {
+    alert("Действие выполнено");
+    setIsConfirmed(true)
+    setShowModal(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <button onClick={openModal}>Выполнить действие</button>
+      {showModal && (
+        <Modal
+          closeModal={() => setShowModal(false)}
+          showSuccess={showSuccess}
+          countOpened={countOpened}
+        />
+      )}
+    </>
   );
-}
+};
 
 export default App;
